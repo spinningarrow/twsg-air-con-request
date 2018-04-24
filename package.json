@@ -6,7 +6,7 @@
   "scripts": {
     "build": "browserify index.js -o bundle.js",
     "start": "python -m SimpleHTTPServer",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo 'tests? what are those?'"
   },
   "keywords": [],
   "author": "",
