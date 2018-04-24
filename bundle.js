@@ -19,6 +19,7 @@ const getFormData = () => {
 const getImageDataUri = url => {
 	return new Promise(resolve => {
 		const image = new Image()
+		image.crossOrigin = 'anonymous'
 		image.onload = function () {
 			const canvas = document.createElement('canvas')
 			canvas.width = this.naturalWidth
@@ -88,7 +89,7 @@ const submit = (event) => {
 
 	const eventDetails = getFormData()
 
-	getImageDataUri('/aircon-new.png')
+	getImageDataUri('https://s3-ap-southeast-1.amazonaws.com/spinningarrow/aircon-new.png')
 		.then(createPdfBlob.bind(null, eventDetails))
 		.then(addLink.bind(null, eventDetails.date))
 		.then(() => document.body.classList.remove('loading'))
