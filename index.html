@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TWSG Air Con Booking Request</title>
+	<style>
+		body {
+			font-family: sans-serif;
+			margin: 0 auto;
+			width: 600px;
+		}
+
+		.submit-button::after {
+			content: 'Generate PDF';
+		}
+
+		.loading .submit-button {
+			pointer-events: none;
+			opacity: 0.5;
+		}
+
+		.loading .submit-button::after {
+			content: 'Loading…';
+		}
+	</style>
+</head>
+<body>
+	<h1>TWSG Air Con Booking Request</h1>
+
+	<form id="form">
+		<p>
+			<label>
+				Event Name
+				<input required id="event-name">
+			</label>
+		</p>
+
+		<p>
+			<label>
+				Date
+				<input required type="date" id="date">
+			</label>
+		</p>
+
+		<p>
+			<label>
+				Start time
+				<input required type="time" id="start-time">
+			</label>
+		</p>
+
+		<p>
+			<label>
+				End time
+				<input required type="time" id="end-time">
+			</label>
+		</p>
+
+		<p>
+			<label>
+				Requester Name
+				<input required id="requester-name">
+			</label>
+		</p>
+
+		<p>
+			<label>
+				Requester Contact Number
+				<input required type="tel" id="requester-contact">
+			</label>
+		</p>
+
+		<p>
+			<button id="generate-pdf" class="submit-button">
+			</button>
+		</p>
+	</form>
+
+	<script src="bundle.js"></script>
+	<script>
+		document.querySelector('#form').addEventListener('submit', event => {
+			window.submit(event)
+		})
+	</script>
+</body>
+</html>
