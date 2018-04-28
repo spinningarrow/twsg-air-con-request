@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "blob-stream": "^0.1.3",
     "pdfkit": "^0.8.3"
