@@ -15,45 +15,44 @@ const getFormData = () => {
 	}
 }
 
-const getImageDataUri = url => {
+const getImageData = async url => {
+	const blob = await fetch(url).then(response => response.blob())
+
 	return new Promise(resolve => {
-		const image = new Image()
-		image.crossOrigin = 'anonymous'
-		image.onload = function () {
-			const canvas = document.createElement('canvas')
-			canvas.width = this.naturalWidth
-			canvas.height = this.naturalHeight
-
-			canvas.getContext('2d').drawImage(this, 0, 0)
-
-			resolve(canvas.toDataURL('image/png'))
-		}
-
-		image.src = url
+		const fileReader = new FileReader()
+		fileReader.onload = event => resolve(event.target.result)
+		fileReader.readAsArrayBuffer(blob)
 	})
 }
 
-const createPdfBlob = ({ eventName, date, startTime, endTime, requesterName, requesterContact }, dataUri) => {
+const createPdfBlob = ({
+	eventName,
+	date,
+	startTime,
+	endTime,
+	requesterName,
+	requesterContact
+}, imageData) => {
+	const pdf = new PDFDocument()
+
+	const stream = pdf.pipe(blobStream())
+
+	pdf.image(imageData, 0, 0, {
+		width: pdf.page.width,
+		height: pdf.page.height,
+	})
+
+	pdf.text(eventName, 430, 115)
+	pdf.text(date, 200, 242)
+	pdf.text(startTime, 230, 255)
+	pdf.text(endTime, 330, 255)
+
+	pdf.text(`${requesterName}    ${requesterContact}`, 220, 465)
+	pdf.text(new Date().toLocaleDateString(), 220, 500)
+
+	pdf.end()
+
 	return new Promise(resolve => {
-		const pdf = new PDFDocument()
-
-		const stream = pdf.pipe(blobStream())
-
-		pdf.image(dataUri, 0, 0, {
-			width: pdf.page.width,
-			height: pdf.page.height,
-		})
-
-		pdf.text(eventName, 430, 115)
-		pdf.text(date, 200, 242)
-		pdf.text(startTime, 230, 255)
-		pdf.text(endTime, 330, 255)
-
-		pdf.text(`${requesterName}    ${requesterContact}`, 220, 465)
-		pdf.text(new Date().toLocaleDateString(), 220, 500)
-
-		pdf.end()
-
 		stream.on('finish', () => {
 			const blob = stream.toBlob('application/pdf')
 			const url = stream.toBlobURL('application/pdf')
@@ -81,14 +80,14 @@ const addLink = (date, blob) => {
 	})
 }
 
-const submit = (event) => {
+const submit = event => {
 	event.preventDefault()
 
 	document.body.classList.add('loading')
 
 	const eventDetails = getFormData()
 
-	getImageDataUri('https://s3-ap-southeast-1.amazonaws.com/spinningarrow/aircon-new.png')
+	getImageData('https://s3-ap-southeast-1.amazonaws.com/spinningarrow/aircon-new.png')
 		.then(createPdfBlob.bind(null, eventDetails))
 		.then(addLink.bind(null, eventDetails.date))
 		.then(() => document.body.classList.remove('loading'))
