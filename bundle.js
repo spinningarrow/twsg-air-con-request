@@ -92,7 +92,10 @@ const submit = (event) => {
 		.then(createPdfBlob.bind(null, eventDetails))
 		.then(addLink.bind(null, eventDetails.date))
 		.then(() => document.body.classList.remove('loading'))
-		.catch(() => document.body.classList.remove('loading'))
+		.catch(error => {
+			document.body.classList.remove('loading')
+			throw error
+		})
 }
 
 window.submit = submit
