@@ -1,0 +1,4 @@
+- Add background color and max-width and full height body
+- Remove paragraph tags
+- Try to uglify after common shakeify
+	- OR Try the parcel package manager

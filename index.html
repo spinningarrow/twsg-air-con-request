@@ -10,17 +10,16 @@
 			width: 600px;
 		}
 
-		.submit-button::after {
-			content: 'Generate PDF';
+		.loading-button {
+			display: none;
 		}
 
 		.loading .submit-button {
-			pointer-events: none;
-			opacity: 0.5;
+			display: none;
 		}
 
-		.loading .submit-button::after {
-			content: 'Loading…';
+		.loading .loading-button {
+			display: initial;
 		}
 	</style>
 </head>
@@ -71,12 +70,12 @@
 		</p>
 
 		<p>
-			<button id="generate-pdf" class="submit-button">
-			</button>
+			<button id="generate-pdf" class="submit-button">Generate PDF</button>
+			<button class="loading-button" disabled>Loading…</button>
 		</p>
 	</form>
 
-	<script src="bundle.js"></script>
+	<script src="bundle.min.js"></script>
 	<script>
 		document.querySelector('#form').addEventListener('submit', event => {
 			window.submit(event)
